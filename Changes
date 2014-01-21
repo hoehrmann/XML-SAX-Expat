@@ -1,6 +1,15 @@
 
 Revision history for XML::SAX::Expat:
 
+0.51 May 2013
+    - attempt to repair https://rt.cpan.org/Ticket/Display.html?id=86087
+      and the duplicate https://rt.cpan.org/Ticket/Display.html?id=88638
+
+0.50 May 2013
+    - fixed broken link to SAX2 specification in POD
+    - added repository information to Makefile.PL
+    - added README file to satisfy packaging guidelines
+
 0.40	2008-06-30 08:00
     - small Kwalitee improvements
 

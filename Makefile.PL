@@ -16,9 +16,14 @@ WriteMakefile(
     LICENSE       => 'perl',
     'dist'        => {
       PREOP     => 'chmod 600 Makefile.PL',
-      TARFLAGS	=> '--group=cpan --owner=bjoern -cvf',
+      TARFLAGS	=> '--group=none --owner=bjoern --mode=a+rw -cvf',
+      COMPRESS  => 'gzip -9',
     },
-
+    META_MERGE => {
+      resources => {
+        repository  => 'https://github.com/hoehrmann/XML-SAX-Expat',
+      },
+    },
 );
 
 

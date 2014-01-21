@@ -11,7 +11,7 @@ use XML::NamespaceSupport   qw();
 use XML::Parser             qw();
 
 use vars qw($VERSION);
-$VERSION = '0.40';
+$VERSION = '0.51';
 
 
 #,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#
@@ -532,8 +532,7 @@ This is an implementation of a SAX2 driver sitting on top of Expat
 updated.
 
 It is still incomplete, though most of the basic SAX2 events should be
-available. The SAX2 spec is currently available from
-http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/perl-xml/libxml-perl/doc/sax-2.0.html?rev=HEAD&content-type=text/html
+available. The SAX2 spec is currently available from L<http://perl-xml.sourceforge.net/perl-sax/>.
 
 A more friendly URL as well as a PODification of the spec are in the
 works.
@@ -583,7 +582,7 @@ set_document_locator is not yet called.
 
 Robin Berjon; stolen from Ken Macleod, ken@bitsko.slc.ut.us, and with
 suggestions and feedback from perl-xml. Currently maintained by Bjoern
-Hoehrmann L<http://bjoern.hoehrmann.de/>.
+Hoehrmann, L<http://bjoern.hoehrmann.de/>.
 
 =head1 COPYRIGHT AND LICENSE
 
