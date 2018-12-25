@@ -14,6 +14,15 @@ use vars qw($VERSION);
 $VERSION = '0.51';
 
 
+sub new {
+    my $class = shift;
+    my $self = $class->SUPER::new(@_);
+    # set feature state to historical behavioral defaults
+    $self->set_feature('http://xml.org/sax/features/external-general-entities', 1);
+    $self->set_feature('http://xml.org/sax/features/external-parameter-entities', 0);
+    return $self;
+}
+
 #,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#
 #`,`, Variations on parse `,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,#
 #```````````````````````````````````````````````````````````````````#
@@ -90,8 +99,8 @@ sub _create_parser {
          if $self->{_InParse};
 
     my $featUri = 'http://xml.org/sax/features/';
-    my $ppe = ($self->get_feature($featUri . 'external-general-entities') or
-               $self->get_feature($featUri . 'external-parameter-entities') ) ? 1 : 0;
+    my $pge = $self->get_feature($featUri . 'external-general-entities')   ? 1 : 0;
+    my $ppe = $self->get_feature($featUri . 'external-parameter-entities') ? 1 : 0;
 
     my $expat = XML::Parser->new( ParseParamEnt => $ppe );
     $expat->{__XSE} = $self;
@@ -107,8 +116,6 @@ sub _create_parser {
                         CdataEnd    => \&_handle_end_cdata,
                         Unparsed    => \&_handle_unparsed_entity,
                         Notation    => \&_handle_notation_decl,
-                        #ExternEnt
-                        #ExternEntFin
                         Entity      => \&_handle_entity_decl,
                         Element     => \&_handle_element_decl,
                         Attlist     => \&_handle_attr_decl,
@@ -116,6 +123,12 @@ sub _create_parser {
                         DoctypeFin  => \&_handle_end_doctype,
                         XMLDecl     => \&_handle_xml_decl,
                       );
+    if (!$pge) {
+        $expat->setHandlers(
+                        ExternEnt   => sub { ''; },
+                        #ExternEntFin not needed
+                      );
+    }
 
     $self->{_InParse} = 1;
     $self->{_NodeStack} = [];
@@ -551,14 +564,17 @@ PerlSAX2 specification, available above.
 Returns:
 
   * http://xml.org/sax/features/external-general-entities
+    (default: on)
   * http://xml.org/sax/features/external-parameter-entities
+    (default: off)
   * [ Features supported by ancestors ]
 
-Turning one of the first two on also turns the other on (this maps
-to the XML::Parser ParseParamEnts option). This may be fixed in the
-future, so don't rely on this behaviour.
-
 =back
+
+Depending on the application, you may want to turn
+external-general-entities off for security reasons. The default is on
+to maintain behavioral backwards compatibility with (common) use cases
+that don't set any feature states.
 
 =head1 MISSING PARTS
 
